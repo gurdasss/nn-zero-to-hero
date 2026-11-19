@@ -144,7 +144,7 @@ learning is in the model code, not the boilerplate.
 - **Not yet installed — add when the lesson needs it:**
   - System Graphviz binary, for `draw_dot` (Phase 1 item 3). The pip package alone
     can't render. Needs sudo, so ask me to run `! sudo apt install -y graphviz`.
-  - PyTorch, needed from Phase 1 item 11 (micrograd vs PyTorch). Use the CPU wheel
+  - PyTorch, needed from Phase 1 item 10 in `knowledge/PLAN.md` (micrograd vs PyTorch). Use the CPU wheel
     to avoid a multi-GB CUDA download:
     `.venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu`
 - makemore needs `names.txt` (from `karpathy/makemore`) next to the notebook in
