@@ -1,0 +1,13 @@
+# Python / Jupyter
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Obsidian config (vault lives on the Windows mirror; this one is local noise)
+.obsidian/
+
+# Downloaded data — re-fetchable from karpathy/makemore
+names.txt
+
+# Claude Code local settings
+.claude/settings.local.json
