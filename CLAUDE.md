@@ -171,14 +171,14 @@ to it with relative paths; it is wherever this `CLAUDE.md` sits.
 ├── transcripts/           # lecture1..6-transcript.txt (see table above)
 ├── my-work/               # my notebooks and code — not in the originals
 │   └── *.ipynb
-├── knowledge/             # all prose; this is the Obsidian vault content
+├── knowledge/             # all prose: plan, progress, notes
 │   ├── PROGRESS.md        # current state — read first, update last, every session
 │   ├── PLAN.md            # the full learning plan, lesson by lesson
 │   ├── notes/             # lesson notes, one .md per lesson
 │   ├── concepts/          # atomic concept notes, one idea per file
 │   └── prereqs/           # just-in-time prerequisite explainers
 ├── .venv/                 # gitignored
-└── .obsidian/             # gitignored; stray local vault config, not the real vault
+└── .obsidian/             # gitignored; stray local config, ignore it
 ```
 
 - **Never edit anything in `lectures/`, `README.md` or `LICENSE`.** It's a fork, and I
@@ -187,41 +187,13 @@ to it with relative paths; it is wherever this `CLAUDE.md` sits.
 - Run Python inside WSL. Don't invoke Windows Python.
 - Everything you write — notes, plans, explainers — goes under `knowledge/`. Never
   write course prose anywhere else in the repo.
-
-### Mirroring to Windows for Obsidian
-
-I read my notes in **Obsidian**, which runs on Windows and can't reliably open a WSL
-path. So `knowledge/` is mirrored to a Windows folder, and that copy is what Obsidian
-opens as its vault.
-
-**Run this as the last step of every session, after `PROGRESS.md` is updated:**
-
-```bash
-rsync -rltv --delete --no-perms --no-owner --no-group \
-  --exclude='.obsidian/' \
-  knowledge/ "/mnt/c/Users/satwa/OneDrive/Documents/neural-network-crash-course/"
-```
-
-Notes on that command, don't "simplify" them away:
-- `--exclude='.obsidian/'` is essential. Obsidian stores its own config, plugins and
-  graph settings in `.obsidian/` inside the vault. Without the exclude, `--delete`
-  wipes my Obsidian setup every session.
-- `--no-perms --no-owner --no-group` avoids permission errors on the Windows mount.
-- `-a` is deliberately not used, for the same reason.
-
-**Direction is one-way: WSL → Windows. The Windows copy is a read-only view.**
-- Never read course material from the Windows path. Always read from `knowledge/`.
-- Never write to the Windows path except via that rsync.
-- If I mention having edited a note in Obsidian, stop and tell me it will be
-  overwritten on the next mirror, and offer to copy my change back into `knowledge/`
-  first.
-
-Also run the mirror mid-session if I ask to "check it in Obsidian" — otherwise what
-I'm looking at is stale.
+- Don't copy or mirror anything outside this repo (no Obsidian vault, no Windows
+  folder). Keep the repo tidy: files in the folder their kind belongs in, named by
+  the conventions below, no stray scratch files.
 
 ### Note conventions
 
-- These notes are read in **Obsidian**, so use `[[wikilinks]]` to connect ideas.
+- Use `[[wikilinks]]` to connect ideas.
   Every concept note should link to the concepts it depends on and the lessons that
   use it. The graph is a feature — be generous with links.
 - One idea per file in `knowledge/concepts/`. Filename is the idea:
@@ -267,7 +239,6 @@ I work in Jupyter notebooks, one per small idea, deliberately disposable:
 5. I break it on purpose. We discuss what broke and why.
 6. You write the notes and concept files under `knowledge/`.
 7. You update `knowledge/PROGRESS.md`.
-8. You run the rsync mirror so I can read it in Obsidian.
 
 **Check understanding before moving on.** Don't advance a lesson until I can explain
 the previous one back to you in my own words. Ask me to. If my explanation has a hole,
@@ -275,8 +246,7 @@ go back — don't paper over it.
 
 **At the end of every session**, update `knowledge/PROGRESS.md` with: lesson completed,
 what I built, what I got stuck on, what's next, and anything I said I wanted to
-revisit. Then run the rsync mirror. The session isn't finished until the mirror has
-run.
+revisit. The session isn't finished until `PROGRESS.md` is updated.
 
 ---
 

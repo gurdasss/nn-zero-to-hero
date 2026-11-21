@@ -12,7 +12,8 @@ Full map: [[PLAN]].
 
 ## Current position
 - **Lesson 0** — done. See [[00-markov-chain]].
-- Next: **Phase 1, item 1** — derivatives without calculus: `my-work/01-nudge-a-number.ipynb` (`f(x)` done, sections 2-5 empty).
+- **Phase 1, item 1** — derivatives without calculus: `my-work/01-nudge-a-number.ipynb`. Sections 1-3 built, 4-5 empty.
+- Next: the **"Pick up here"** cell in notebook 01 (between sections 3 and 4). It has three open questions. Answer them, explain section 3 back, then do section 4.
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -43,6 +44,18 @@ Full map: [[PLAN]].
 - Bugs: capitalised output vs lowercase data, wrong denominator, `zzq` test at the wrong N (shape mismatch). All in [[gotchas]].
 - Section 6 answers were polished by Claude at your request. The ideas are yours, the examples were added.
 - Next: Phase 1 item 1, finish `01-nudge-a-number.ipynb`.
+
+### Session 4 — 2026-11-21
+- Bridge from lesson 0 to Phase 1: counting works when each knob belongs to one context. Shared knobs get conflicting counts, so you nudge toward the best compromise. Note: [[shared-knobs-cant-be-counted]] (the one-liner is yours).
+- Stopped mirroring to Obsidian. `CLAUDE.md` updated: everything stays in this repo.
+- Built in 01: section 2 (plot, with a `while` loop stepping 0.25) and section 3 (rise over run at x = 3, -3, 0.5, 0.8). Slopes measured: +14.003 at x = 3, -21.997 at x = -3.
+- Stuck on / open (all in the notebook's "Pick up here" cell):
+  1. The flat spot: 0.5 (slope -1) undershoots and 0.8 (slope +0.8) overshoots. It's in between.
+  2. Why 14.003 and not 14? You said floating point. It isn't: the error shrinks with h. Run the experiment.
+  3. Which way to turn the knob? You said "push and check". The point is to read it from the slope's sign without re-measuring.
+- Bugs: mixing up slope (a rate) with rise (`slope * h`), and calling a negative slope's size negative. Both in [[gotchas]]. Claude rewrote the section 3 comments to fix the wording; the code is yours.
+- Side finding: stepping by 0.25 lands exactly on 5.0, stepping by 0.1 doesn't (`4.999999999999997`), because 0.25 is stored exactly and 0.1 isn't. Connects to section 4.
+- Next: the three open questions, explain-back, section 4 (tiny h), section 5 (three inputs).
 
 ## Revisit later
 - Unanswered leading question: why can the generator never land on an unseen context? (5,000 names, zero errors.) Hint: `(*current_context[1:], next_char)`.

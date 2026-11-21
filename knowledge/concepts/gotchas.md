@@ -22,3 +22,14 @@
 - **Expected:** `ngram_dict[('z','z','q')]` raising `KeyError` at N = 3 shows `zzq` was never seen.
 - **Happened:** at N = 3 every key is 2 letters long. A 3-letter key can *never* be found, whatever the data says.
 - **Why:** check the shape of the question matches the shape of the table before trusting the answer. This is the same bug class as tensor shape mismatches later in [[PLAN]] Phase 2.
+
+## Lesson 1 — Nudge a number ([[PLAN]], `my-work/01-nudge-a-number.ipynb`)
+
+### Mixing up slope and rise
+- **Expected:** "slope 14 means for every 1 unit push (e.g. 0.001) the output increases by 0.014".
+- **Happened:** that sentence treats "1 unit" and "0.001" as the same push.
+- **Why:** the slope is a **rate**: output change per 1 unit of push. The rise is what you get for *this* push: `rise ≈ slope * h`. Slope 14 with h = 0.001 gives a rise of about 0.014.
+
+### Calling a negative slope's "size" negative
+- **Expected:** "size of the slope was -21.99", "output will increase by -0.022".
+- **Why it's wrong:** sign and size are separate. Sign = direction (negative means the output goes down when x goes right). Size = how steep (about 22). Say "decreases by 0.022".
