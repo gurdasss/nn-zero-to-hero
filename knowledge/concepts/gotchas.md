@@ -33,3 +33,9 @@
 ### Calling a negative slope's "size" negative
 - **Expected:** "size of the slope was -21.99", "output will increase by -0.022".
 - **Why it's wrong:** sign and size are separate. Sign = direction (negative means the output goes down when x goes right). Size = how steep (about 22). Say "decreases by 0.022".
+
+### Nudging the wrong function, then feeding the slope back in as an input
+- **Expected:** `g(a=slope_at_x(a), b=b, c=c)` to give the slope of `d = a*b + c` with respect to `a`.
+- **Happened:** printed `slope of a = 8.0003`. The real answer is -3.
+- **Why:** `slope_at_x` calls `f` (the quadratic from section 1), not `g`. So it measured the slope of `f` at 2 (that's the 8), then passed that slope into `g` as if it were `a`. A slope is a measurement *about* an input, not a new value *for* it. The fix: call `g` twice, once as is and once with only `a` pushed by `h`, then subtract and divide by `h`. See [[slope-of-a-product]].
+- **Related:** I also predicted +39,970 for `a`'s slope. The real answer is -3. Read the slope off the expression first ("what is `a` multiplied by?") before computing anything.

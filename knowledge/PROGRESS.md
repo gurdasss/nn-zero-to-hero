@@ -12,8 +12,8 @@ Full map: [[PLAN]].
 
 ## Current position
 - **Lesson 0** — done. See [[00-markov-chain]].
-- **Phase 1, item 1** — derivatives without calculus: `my-work/01-nudge-a-number.ipynb`. Sections 1-3 built, 4-5 empty.
-- Next: the **"Pick up here"** cell in notebook 01 (between sections 3 and 4). It has three open questions. Answer them, explain section 3 back, then do section 4.
+- **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
+- Next: **Phase 1 item 2, the `Value` object** (Lecture 1, ~14-18%, "class value takes a single scalar"). It needs Python dunder methods; give the just-in-time prereq first.
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -57,7 +57,17 @@ Full map: [[PLAN]].
 - Side finding: stepping by 0.25 lands exactly on 5.0, stepping by 0.1 doesn't (`4.999999999999997`), because 0.25 is stored exactly and 0.1 isn't. Connects to section 4.
 - Next: the three open questions, explain-back, section 4 (tiny h), section 5 (three inputs).
 
+### Session 5 — 2026-11-23
+- Finished notebook 01: section 4 (tiny h) and section 5 (three inputs).
+- Explained back: slope = rate of change per push, and h can't be tiny because floats are finite. Both right in spirit. Corrected: `h` is the push, the slope is per **1 unit**; the sign comes from the output's change, not x's; and too-small h fails because the rise becomes rounding noise (`3.0 + 1e-20 == 3.0`).
+- Bug: section 5 first used `slope_at_x` (which nudges `f`) and fed its slopes into `g` as inputs. Fixed with one function per input that calls `g` twice. In [[gotchas]].
+- Stuck on: why nudging `b` moves `d` by `a`. Clicked with the shopping-bill picture and whole-number pushes. Then got `a`'s slope (-3) on your own.
+- Notes: [[01-what-is-a-derivative]], [[slope-is-sensitivity]], [[step-size-h]], [[slope-of-a-product]].
+- Next: item 2, the `Value` object.
+
 ## Revisit later
+- Flat spot of `f`: you bracketed it between 0.5 and 0.8 but never pinned it down. Narrow it by nudging (hint: it's a simple fraction).
+- Where did the +39,970 prediction for `a`'s slope come from? Never explained.
 - Unanswered leading question: why can the generator never land on an unseen context? (5,000 names, zero errors.) Hint: `(*current_context[1:], next_char)`.
 - At large N, short names produce no N-grams at all (`range(len(word) - (N - 1))`). How many names does N = 9 silently drop?
 
