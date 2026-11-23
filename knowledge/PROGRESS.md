@@ -13,7 +13,8 @@ Full map: [[PLAN]].
 ## Current position
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
-- Next: **Phase 1 item 2, the `Value` object** (Lecture 1, ~14-18%, "class value takes a single scalar"). It needs Python dunder methods; give the just-in-time prereq first.
+- **Phase 1, item 2** — the `Value` object: `my-work/02-value-object.ipynb`. Core built (data, `_prev`, `_op`, `+`, `*`). Four open questions parked in the section 6 cell, and one in section 5.
+- Next: answer those (see "Revisit later"), explain item 2 back, then item 3 (draw the graph; needs `sudo apt install -y graphviz`).
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -65,7 +66,17 @@ Full map: [[PLAN]].
 - Notes: [[01-what-is-a-derivative]], [[slope-is-sensitivity]], [[step-size-h]], [[slope-of-a-product]].
 - Next: item 2, the `Value` object.
 
+### Session 5, continued — item 2 started
+- Committed lesson 1 (`dd605fb`). Wrote [[python-dunder-methods]], [[02-value-object]] and scaffolded notebook 02.
+- Big-picture questions: why `Value`? (Keep the receipt so slopes can be read off the formula, not re-measured.) Then the training loop. Your summary was close, with two corrections: no "if the loss is bad" gate, and the update moves *against* the slope by a small step, not "apply the slope". Note: [[forward-backward-update]]. Your analogy: the graph is like an AST (a graph, really, since a value can be reused).
+- Built: `Value` with `data`, `_prev`, `_op`, `__repr__`, `__add__`, `__mul__`, and a recursive `traverse_graph`. All in one cell (jumped ahead).
+- Bugs: `_prev = None` for leaves, fixed to `()`. Section 6 answers written as guesses, 3 of 4 wrong. Both in [[gotchas]]. Claude fixed stale comments in notebook 02 at your request.
+- Answered: the math happens once, when `y` is created.
+
 ## Revisit later
+- Item 2, section 5: `traverse_graph(d)` never prints d's own `'+'`. Which line moves?
+- Item 2, section 6: why does `a + 1` name `int`? Why does `1 + a` give a different error (whose `__add__` runs first)? `a * a`: one entry or two in the receipt?
+- Item 2: after the update step changes `.data`, what must happen before the next backward pass, and why? (Follows from "math happens at creation".)
 - Flat spot of `f`: you bracketed it between 0.5 and 0.8 but never pinned it down. Narrow it by nudging (hint: it's a simple fraction).
 - Where did the +39,970 prediction for `a`'s slope come from? Never explained.
 - Unanswered leading question: why can the generator never land on an unseen context? (5,000 names, zero errors.) Hint: `(*current_context[1:], next_char)`.

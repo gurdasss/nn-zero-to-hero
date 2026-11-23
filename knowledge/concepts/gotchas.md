@@ -39,3 +39,15 @@
 - **Happened:** printed `slope of a = 8.0003`. The real answer is -3.
 - **Why:** `slope_at_x` calls `f` (the quadratic from section 1), not `g`. So it measured the slope of `f` at 2 (that's the 8), then passed that slope into `g` as if it were `a`. A slope is a measurement *about* an input, not a new value *for* it. The fix: call `g` twice, once as is and once with only `a` pushed by `h`, then subtract and divide by `h`. See [[slope-of-a-product]].
 - **Related:** I also predicted +39,970 for `a`'s slope. The real answer is -3. Read the slope off the expression first ("what is `a` multiplied by?") before computing anything.
+
+## Lesson 2 — The Value object ([[PLAN]], `my-work/02-value-object.ipynb`)
+
+### `None` for "no children"
+- **Expected:** `self._prev = None` on leaves to mean "nothing made me".
+- **Happened:** fine until anything loops over it: `for child in a._prev` gives `TypeError: 'NoneType' object is not iterable`.
+- **Why:** use an empty collection (`()`) for "none". The loop then does nothing, and a recursive walk stops at the leaves by itself, with no special case needed.
+
+### Writing predictions down as results
+- **Expected:** `a + 1` and `1 + a` give the same `TypeError`, and `y.data` updates when `x.data` changes.
+- **Happened:** `a + 1` gives `AttributeError` (inside my `__add__`), `1 + a` gives a different `TypeError`, and `y.data` didn't change.
+- **Why:** the comments were guesses, not observations. Write the prediction, run it, *then* write what printed. Also save before asking for review: twice the file on disk didn't match what I'd run.

@@ -1,0 +1,58 @@
+# 02 — The `Value` object: numbers that remember where they came from
+
+**What this is:** Phase 1 item 2. A wrapper around one number that also records how that number was made.
+**Why it matters:** nudging ([[01-what-is-a-derivative]]) costs one full re-run per input. To do better, the expression has to remember its own shape so it can be walked backwards later.
+**After reading:** you can say what three things a `Value` stores and why each one is there.
+
+Notebook: `my-work/02-value-object.ipynb`. Plan: [[PLAN]]. Prereq: [[python-dunder-methods]].
+Lecture 1, ~14%: *"class value takes a single scalar value that it wraps"*.
+
+---
+
+## The problem
+
+```python
+d = 2.0 * -3.0 + 10.0     # d is 4.0
+```
+
+Once this line runs, `d` is just `4.0`. It has no idea it came from a multiply and an add, or which numbers went in. You can't ask a plain float "who made you?"
+
+## The idea
+
+Make a number that **keeps a receipt**:
+
+```
+d = 4.0
+  made by: +
+  from:    (-6.0, 10.0)
+                │
+                └── -6.0
+                      made by: *
+                      from:    (2.0, -3.0)
+```
+
+Follow the receipts back from `d` and you reach every input. That chain of receipts is the **expression graph**. Item 3 draws it, and item 4 walks it backwards to get slopes.
+
+## What a `Value` holds
+
+| field | what it is | for `d` above |
+|---|---|---|
+| `data` | the plain number | `4.0` |
+| `_prev` | the Values that made it ("children") | the `-6.0` and the `10.0` |
+| `_op` | the operation that made it, as a string | `'+'` |
+
+Inputs you create by hand (`2.0`, `-3.0`, `10.0`) have no children and no op. They're the leaves.
+
+## How the receipt gets written
+
+You never write it yourself. `__add__` and `__mul__` ([[python-dunder-methods]]) do the math on `.data`, then return a **new** `Value` that records `self` and `other` as its children and `'+'` or `'*'` as its op. So writing `a * b + c` builds the graph as a side effect.
+
+Lecture 1, ~18%: *"we want to keep these expression graphs"*.
+
+## What I found (so far)
+
+- **Leaves need `_prev = ()`, not `None`.** Looping over `()` does nothing, so a recursive walk stops at the leaves on its own. `None` crashes the loop. See [[gotchas]].
+- **The math happens once, at creation.** `y = x * b` computes `y.data` right then. Change `x.data` later and `y.data` stays stale, while the receipt still points at the changed `x`.
+- **Breaking it:** `a + 1` fails *inside* `__add__` (`1` has no `.data`). `1 + a` fails *before* reaching your code, with a different error. `a * a` gives a tuple holding `a` twice.
+
+Open: see "Revisit later" in [[PROGRESS]].
