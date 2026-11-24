@@ -13,8 +13,8 @@ Full map: [[PLAN]].
 ## Current position
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
-- **Phase 1, item 2** — done. See [[02-value-object]]. Explain-back given; one gap (see Revisit later).
-- Next: item 3, draw the graph. Blocked: needs the system Graphviz binary (see Not yet installed).
+- **Phase 1, item 2** — done. See [[02-value-object]]. Explained back in full.
+- **Phase 1, item 3** — visualising the graph: `my-work/03-visualise-graph.ipynb` scaffolded (Claude wrote `draw_dot` as a drawing helper). You add `label` and build `L = (a*b + c) * f`. Drawing needs the system Graphviz binary (see Not yet installed).
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -79,9 +79,9 @@ Full map: [[PLAN]].
 - Slips: cited the `*` line for `a + 1` (it's the `+` line in `__add__`); wrote `NotImplementedError` for `NotImplemented`. In [[gotchas]].
 - Claude tidied notebook 02 at your request: markdown, Q&A layout, explain-back moved into a text cell. Your code and answers unchanged.
 - Graphviz: pip package already in `.venv`; system binary not installed.
+- Explain-back, round 2: nudging = one re-run per weight; the receipt lets you walk back from the loss through the ops in order. Passed. You said "apply each weight's slope" again: the update moves *against* the slope, by a small step ([[forward-backward-update]]).
 
 ## Revisit later
-- Item 2 explain-back gap: you said what the receipt is, not what it's *for*. One sentence: why does backprop need it?
 - `traverse_graph`: drop the dead `is not None` check.
 - Flat spot of `f`: you bracketed it between 0.5 and 0.8 but never pinned it down. Narrow it by nudging (hint: it's a simple fraction).
 - Where did the +39,970 prediction for `a`'s slope come from? Never explained.

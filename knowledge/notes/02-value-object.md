@@ -61,4 +61,6 @@ Lecture 1, ~18%: *"we want to keep these expression graphs"*.
 
 > A plain float like `d = a * b + c` keeps only the result. How `d` was built is lost. A `Value` keeps the receipt (its children and the op), so starting from the final output you can walk back through every step.
 
-Missing piece: *why* that matters. Backprop needs the receipt to work out every input's slope in one backward walk, instead of re-running the whole expression once per input like in [[01-what-is-a-derivative]].
+> Nudging meant one full re-run per weight. The receipt lets you walk backwards from the loss, see which operations ran in what order, and get every weight's slope from that walk.
+
+What makes this a win: nudging 10,000 weights costs 10,001 runs of the expression. With the receipt it's one forward pass plus one backward walk, however many weights there are. The "simple trick" during the walk is each operation's local rule chained together. That's items 4-5, see [[slope-of-a-product]].
