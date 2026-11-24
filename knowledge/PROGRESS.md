@@ -124,3 +124,7 @@ Full map: [[PLAN]].
 - Explain-back (spoken): walked the whole chain right to left and got `a` = 6 and `b` = -4 on your own (ahead of item 4). Right. Gaps: "set the other side's data" leaves out "× the incoming slope" (it was × 1 at `L`, so it didn't show), and no reason given for why `+` passes -2 through unchanged. Asked for both before marking item 3 done.
 - Final explain-back: `a`'s slope = `b.data` (-3) × `e`'s slope (-2). `+` passes -2 through because nudging `c` by h moves `d` by exactly h (local slope 1). Passed. Item 3 done. Note: [[03-visualise-graph]].
 - Next: item 4, manual backprop with `.grad` in code.
+
+### Session 7, continued — item 4 started
+- Committed and pushed lesson 3 (`49962f2`).
+- Scaffolded `my-work/04-manual-backprop.ipynb`: add `grad`, rebuild the graph, a nudge checker (`lol()`), fill the grads right to left as expressions, one step up, five breaks.
