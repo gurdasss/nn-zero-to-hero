@@ -14,7 +14,7 @@ Full map: [[PLAN]].
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
 - **Phase 1, item 2** — done. See [[02-value-object]]. Explained back in full.
-- **Phase 1, item 3** — visualising the graph: `my-work/03-visualise-graph.ipynb` scaffolded (Claude wrote `draw_dot` as a drawing helper). You add `label` and build `L = (a*b + c) * f`. Graphviz `dot` 2.43.0 installed 2026-11-24.
+- **Phase 1, item 3** — in progress. `draw_dot(L)` works. Still to do: redo section 4 and break 4, answer the open break questions, write the findings cell, then explain it back. Everything left is in the notebook's "Review — pick up here" cell. Graphviz `dot` 2.43.0 installed 2026-11-24.
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -98,3 +98,11 @@ Full map: [[PLAN]].
 
 ## Not yet installed
 - PyTorch CPU wheel: needed at item 10.
+
+### Session 6, continued — item 3
+- Built: `label` on `Value`, with `__add__`/`__mul__` building bracketed labels like `((a*b)+c)` automatically. Built `L = (a*b + c) * f` and drew it with `draw_dot`: -6, 4, -8, correct.
+- Breaks: break 1 (`draw_dot(e)` shows only `a`, `b`) and break 3 (one `a` box, two arrows out) both right.
+- Wrong: (1) Section 4 order. You tied it to `*` vs `+` and to "check if the loss improves". This repeats the session 5 gate mistake. The backward pass only fills in slopes, starting from `L`. (2) Break 4. You predicted `L` recomputes when `a.data = 100`, but nothing re-runs. This repeats notebook 02. You didn't see the actual result because cells ran out of order. All three are in [[gotchas]].
+- Open: why `e` can't see downstream boxes, `a * a` (one box, one arrow, because edges are a set; watch for this in item 6), tree vs graph, the stale label comment in cell 6, and the findings cell.
+- Claude added a review cell to notebook 03. Your code is unchanged.
+- Next: the open items above, explain item 3 back, then item 4 (manual backprop).

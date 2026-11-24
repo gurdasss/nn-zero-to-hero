@@ -66,3 +66,15 @@
 - **Did:** `__add__` / `__mul__` build the result's label from the children: `f"{self.label}+{other.label}"`.
 - **Happened:** `L = (a*b + c) * f` got the label `a*b+c*f`. Read normally, that means `a*b + (c*f)`, which is a different expression.
 - **Why:** the string remembers the order of the ops but not the grouping. The graph (`_prev`) has the real structure, and the label is only a rough copy of it. Labels also get longer with every layer, so in an MLP they'd be unreadable. Karpathy names the in-between values by hand (`e.label = 'e'`).
+
+### "Fill in a slope, then check if the loss improved"
+- **Expected:** the backward pass fills in the last box, checks whether the loss got better, then goes further back. The order depends on whether a box was made by `*`.
+- **Why it's wrong:** the backward pass changes nothing and checks nothing. It only works out a slope for every box, starting from `L` and moving back. The op type doesn't decide the order. A box's position in the graph does. The loss can only improve in the update step, after *all* slopes are known. This is the same "if the loss is bad" gate that was corrected in session 5. See [[forward-backward-update]].
+
+### Expecting `L` to recompute after `a.data = 100`
+- **Expected:** "forward pass will calculate loss using this new weight".
+- **Why it's wrong:** nothing re-runs. `e`, `d` and `L` were computed once, when they were created, so only `a`'s box changes. I had already found this in notebook 02 and still predicted the opposite. To get a new `L`, you build the expression again. That's what "do a forward pass" means.
+
+### Running break cells out of order
+- **Happened:** all four breaks were in one cell, commented in and out. The saved picture was `h` drawn with `a = 100` (-300, -200), not `L`, so the break 4 result was never seen.
+- **Why:** the notebook keeps state between runs. Give each experiment its own cell, run them top to bottom, and read the picture that belongs to the prediction.
