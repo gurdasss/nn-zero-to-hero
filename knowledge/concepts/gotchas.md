@@ -51,3 +51,11 @@
 - **Expected:** `a + 1` and `1 + a` give the same `TypeError`, and `y.data` updates when `x.data` changes.
 - **Happened:** `a + 1` gives `AttributeError` (inside my `__add__`), `1 + a` gives a different `TypeError`, and `y.data` didn't change.
 - **Why:** the comments were guesses, not observations. Write the prediction, run it, *then* write what printed. Also save before asking for review: twice the file on disk didn't match what I'd run.
+
+### `NotImplemented` vs `NotImplementedError`
+- **Expected:** "if the left side can't add a `Value`, it returns `NotImplementedError`".
+- **Why it's wrong:** these are two different things. `NotImplemented` is a plain value that a dunder *returns* to say "not me, ask the other side", and Python then tries `__radd__`. `NotImplementedError` is an exception you *raise*, and it stops everything. See [[python-dunder-methods]].
+
+### A dead check left over from `None`
+- **Happened:** `traverse_graph` kept `if value._prev is not None:` after `_prev` changed from `None` to `()`. `()` is never `None`, so the check is always true and does nothing. Leaves print a blank line for their empty `_op`.
+- **Why:** when you change a field's "empty" value, look for code that tested the old one.

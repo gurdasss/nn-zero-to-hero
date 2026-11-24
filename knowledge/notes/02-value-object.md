@@ -53,6 +53,12 @@ Lecture 1, ~18%: *"we want to keep these expression graphs"*.
 
 - **Leaves need `_prev = ()`, not `None`.** Looping over `()` does nothing, so a recursive walk stops at the leaves on its own. `None` crashes the loop. See [[gotchas]].
 - **The math happens once, at creation.** `y = x * b` computes `y.data` right then. Change `x.data` later and `y.data` stays stale, while the receipt still points at the changed `x`.
-- **Breaking it:** `a + 1` fails *inside* `__add__` (`1` has no `.data`). `1 + a` fails *before* reaching your code, with a different error. `a * a` gives a tuple holding `a` twice.
+- **Breaking it:** `a + 1` fails *inside* `__add__`, on `self.data + other.data`, because `other` is the int `1` and has no `.data`. `1 + a` fails *before* reaching your code, with a different error. `a * a` gives a tuple holding `a` twice.
+- **Why `1 + a` is different:** Python asks the left side first, `int.__add__(a)`. An int doesn't know `Value`, so it returns the special value `NotImplemented`. Python then asks the right side, `a.__radd__(1)`. `Value` has no `__radd__`, so Python raises `TypeError`. Adding `__radd__` (and `__rmul__`) later is what makes `2 * a` work.
+- **Walking the receipt:** print a node's own `_op`, then recurse into each child. `d._prev` only gives `d`'s direct parents; you reach the leaves by repeating the step on each of them.
 
-Open: see "Revisit later" in [[PROGRESS]].
+## In my words
+
+> A plain float like `d = a * b + c` keeps only the result. How `d` was built is lost. A `Value` keeps the receipt (its children and the op), so starting from the final output you can walk back through every step.
+
+Missing piece: *why* that matters. Backprop needs the receipt to work out every input's slope in one backward walk, instead of re-running the whole expression once per input like in [[01-what-is-a-derivative]].

@@ -13,8 +13,8 @@ Full map: [[PLAN]].
 ## Current position
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
-- **Phase 1, item 2** — the `Value` object: `my-work/02-value-object.ipynb`. Core built (data, `_prev`, `_op`, `+`, `*`). Four open questions parked in the section 6 cell, and one in section 5.
-- Next: answer those (see "Revisit later"), explain item 2 back, then item 3 (draw the graph; needs `sudo apt install -y graphviz`).
+- **Phase 1, item 2** — done. See [[02-value-object]]. Explain-back given; one gap (see Revisit later).
+- Next: item 3, draw the graph. Blocked: needs the system Graphviz binary (see Not yet installed).
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -73,15 +73,21 @@ Full map: [[PLAN]].
 - Bugs: `_prev = None` for leaves, fixed to `()`. Section 6 answers written as guesses, 3 of 4 wrong. Both in [[gotchas]]. Claude fixed stale comments in notebook 02 at your request.
 - Answered: the math happens once, when `y` is created.
 
+### Session 6 — 2026-11-24
+- Finished item 2. Fixed `traverse_graph` so it prints each node's own op. Answered section 6: `a + 1` fails on `other.data` (`other` is `1`); `1 + a` tries `int.__add__`, then `a.__radd__`, then raises.
+- Explained item 2 back: a float loses how it was made, a `Value` keeps the receipt. Right. Didn't say what backprop uses it for.
+- Slips: cited the `*` line for `a + 1` (it's the `+` line in `__add__`); wrote `NotImplementedError` for `NotImplemented`. In [[gotchas]].
+- Claude tidied notebook 02 at your request: markdown, Q&A layout, explain-back moved into a text cell. Your code and answers unchanged.
+- Graphviz: pip package already in `.venv`; system binary not installed.
+
 ## Revisit later
-- Item 2, section 5: `traverse_graph(d)` never prints d's own `'+'`. Which line moves?
-- Item 2, section 6: why does `a + 1` name `int`? Why does `1 + a` give a different error (whose `__add__` runs first)? `a * a`: one entry or two in the receipt?
-- Item 2: after the update step changes `.data`, what must happen before the next backward pass, and why? (Follows from "math happens at creation".)
+- Item 2 explain-back gap: you said what the receipt is, not what it's *for*. One sentence: why does backprop need it?
+- `traverse_graph`: drop the dead `is not None` check.
 - Flat spot of `f`: you bracketed it between 0.5 and 0.8 but never pinned it down. Narrow it by nudging (hint: it's a simple fraction).
 - Where did the +39,970 prediction for `a`'s slope come from? Never explained.
 - Unanswered leading question: why can the generator never land on an unseen context? (5,000 names, zero errors.) Hint: `(*current_context[1:], next_char)`.
 - At large N, short names produce no N-grams at all (`range(len(word) - (N - 1))`). How many names does N = 9 silently drop?
 
 ## Not yet installed
-- System Graphviz (`sudo apt install -y graphviz`): needed at item 3.
+- System Graphviz binary (`dot`): needed at item 3. The pip `graphviz` 0.21 is already in `.venv`, but it only calls `dot` and can't render without it. You asked for venv-only installs, so this is your call: `! sudo apt install -y graphviz`.
 - PyTorch CPU wheel: needed at item 10.
