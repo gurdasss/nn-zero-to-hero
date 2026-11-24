@@ -78,3 +78,16 @@
 ### Running break cells out of order
 - **Happened:** all four breaks were in one cell, commented in and out. The saved picture was `h` drawn with `a = 100` (-300, -200), not `L`, so the break 4 result was never seen.
 - **Why:** the notebook keeps state between runs. Give each experiment its own cell, run them top to bottom, and read the picture that belongs to the prediction.
+
+### "Slopes travel left to right"
+- **Wrote:** "the slope will travel from left to right", then in the next sentence "the parent will pass its own slope down to child".
+- **Why it's wrong:** the two halves contradict each other. In the picture the inputs (`a`, `b`, `c`, `f`) are on the left and `L` is on the right. Data flows left to right. Slopes start at `L` (right) and travel right to left, to the leaves. "Parent to child" was the right idea: the parent (`L`) is on the *right*.
+
+### "`c`'s slope is 1, so I can skip `d`"
+- **Wrote:** you can get `e`'s slope before `d`'s. Collapse everything to `(((a*b)+c)*f)` and pass `L`'s slope straight to `c`: nudge `c` by 0.001 and `L` moves 0.001, so the slope is 1.
+- **Happened:** `c` never touches `L` directly. Nudging `c` moves `d` by 0.001, and `L = d * f` turns that into a move of `-2 * 0.001`. `c`'s slope is -2, not 1.
+- **Why:** a box's slope depends on everything between it and `L`. Skipping `d` drops the `* f`. That's why you have to know `d`'s slope before `c`'s or `e`'s, and why slopes go right to left.
+
+### For `*`, using the other side's `.grad` instead of its data
+- **Wrote:** for `L = d * f`, "set one's `.grad` to the other's `.grad` times L's slope".
+- **Why it's wrong:** nudge `d` by 0.001 and `L = d * f` moves by `f.data * 0.001`. So `d`'s slope is `f.data` × `L`'s slope = -2. It uses `f`'s **data**, not its grad. Same rule as [[slope-of-a-product]] in notebook 01.

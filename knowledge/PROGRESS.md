@@ -14,7 +14,8 @@ Full map: [[PLAN]].
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
 - **Phase 1, item 2** — done. See [[02-value-object]]. Explained back in full.
-- **Phase 1, item 3** — in progress. `draw_dot(L)` works. Still to do: redo section 4 and break 4, answer the open break questions, write the findings cell, then explain it back. Everything left is in the notebook's "Review — pick up here" cell. Graphviz `dot` 2.43.0 installed 2026-11-24.
+- **Phase 1, item 3** — done. See [[03-visualise-graph]]. Explained back: the full slope chain, with `a` = 6 and `b` = -4 worked out yourself.
+- **Phase 1, item 4** — next: add `.grad` to `Value`, set each slope by hand, see it in `draw_dot`, check each one by nudging.
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -106,3 +107,20 @@ Full map: [[PLAN]].
 - Open: why `e` can't see downstream boxes, `a * a` (one box, one arrow, because edges are a set; watch for this in item 6), tree vs graph, the stale label comment in cell 6, and the findings cell.
 - Claude added a review cell to notebook 03. Your code is unchanged.
 - Next: the open items above, explain item 3 back, then item 4 (manual backprop).
+
+### Session 7 — 2026-11-24
+- You said "all done" on notebook 03. Reviewed it. Not done yet.
+- Fixed: break 4 (`L` stays -8, only `a`'s box changes; rebuild the expression to get a new `L`). Stale label comment in cell 6.
+- Section 4: "start from the loss, flow parent to child". Right direction, but it doesn't name the first box (`L`) or the last ones (the leaves), say what goes in `L`'s box, or answer "can you get `e`'s slope before `d`'s?".
+- Findings cell: says slopes travel **left to right**. Wrong: data goes left to right, slopes go right to left. The same paragraph also says "parent to child", which is right, so it contradicts itself. In [[gotchas]]. It also doesn't say what an arrow means.
+- Still unanswered: break 1 *why* (which way does `_prev` point?), break 2 (how many `a` boxes and arrows; you noted the edge set but didn't say what it does), break 3 (tree or not?).
+- Cells 10 and 12 were saved without outputs, so no prediction was checked against a picture. All breaks are still in one cell.
+- Next: those, explain item 3 back, then item 4 (manual backprop).
+- Recheck: findings cell now says right to left (fixed). Section 4 now names `L` first and `a` last (`b` is last too). Breaks cell, `L`'s box value, "`e` before `d`?", and what an arrow means: still unchanged.
+- Round 3: `L`'s box = 1 (nudge `L` by 0.001, it moves 0.001). Right. Arrow = data flow. Right. Break 3: "not a tree" is right, but your reason cited `g = a * a` (break 2, which draws one arrow). The right example is `h`: `a` feeds two ops, so it has two parents. Claude added your answers to notebook 03 with wording fixed, split the breaks into one cell each, and replaced the review cell. Still open: `e` before `d`?, break 1 why, break 2 run, run the breaks.
+- Round 4: break 1 why: right. Break 2 ran (one `a` box, one arrow in), but the wrong prediction (two boxes) isn't noted and the edge-set question is still open. Breaks 3 and 4 match. **Wrong:** "`e`'s slope before `d`'s? Yes", with `c`'s slope = 1 (it's -2; this skipped `d` and the `* f`). In [[gotchas]]. Sent to run `c = 10.001` and measure. Explain-back for item 3 is still pending.
+- Round 5: "Yes" changed to "No", but the reasoning underneath still says `c`'s slope = 1, and the `c = 10.001` experiment wasn't run. New slip: for `L = d * f`, wrote "set one's `.grad` to the other's `.grad` × L's slope". It's the other's **data** (`d`'s slope = `f.data` × `L`'s slope). Watch out: `a.data` is 100 after break 4, so any rebuild has to use fresh `Value`s. Cell 10 label comment and break 2 are still unchanged.
+- Round 5, continued: at your request Claude wrote out the corrected reasoning in cell 10 (slopes: L 1, d -2, f 4, c -2, e -2) and the break 2 answer. This was the last-resort step, so the answer was given, not worked out. Your mistakes are quoted inline. Also in [[gotchas]]. `a`'s and `b`'s slopes are left for item 4. Next: explain item 3 back.
+- Explain-back (spoken): walked the whole chain right to left and got `a` = 6 and `b` = -4 on your own (ahead of item 4). Right. Gaps: "set the other side's data" leaves out "× the incoming slope" (it was × 1 at `L`, so it didn't show), and no reason given for why `+` passes -2 through unchanged. Asked for both before marking item 3 done.
+- Final explain-back: `a`'s slope = `b.data` (-3) × `e`'s slope (-2). `+` passes -2 through because nudging `c` by h moves `d` by exactly h (local slope 1). Passed. Item 3 done. Note: [[03-visualise-graph]].
+- Next: item 4, manual backprop with `.grad` in code.
