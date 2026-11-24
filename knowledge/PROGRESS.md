@@ -14,7 +14,7 @@ Full map: [[PLAN]].
 - **Lesson 0** — done. See [[00-markov-chain]].
 - **Phase 1, item 1** — done. See [[01-what-is-a-derivative]].
 - **Phase 1, item 2** — done. See [[02-value-object]]. Explained back in full.
-- **Phase 1, item 3** — visualising the graph: `my-work/03-visualise-graph.ipynb` scaffolded (Claude wrote `draw_dot` as a drawing helper). You add `label` and build `L = (a*b + c) * f`. Drawing needs the system Graphviz binary (see Not yet installed).
+- **Phase 1, item 3** — visualising the graph: `my-work/03-visualise-graph.ipynb` scaffolded (Claude wrote `draw_dot` as a drawing helper). You add `label` and build `L = (a*b + c) * f`. Graphviz `dot` 2.43.0 installed 2026-11-24.
 
 ## Goal and preferences (agreed in session 2)
 - Goal: understand what a neural net is and why we need one. You've used Markov chains before.
@@ -81,13 +81,20 @@ Full map: [[PLAN]].
 - Graphviz: pip package already in `.venv`; system binary not installed.
 - Explain-back, round 2: nudging = one re-run per weight; the receipt lets you walk back from the loss through the ops in order. Passed. You said "apply each weight's slope" again: the update moves *against* the slope, by a small step ([[forward-backward-update]]).
 
+### Session 6, continued — item 3 started
+- Graphviz `dot` installed (from outside Claude Code: `!` can't answer sudo's password prompt).
+- Built in 03: `Value` with a `label` that `+` / `*` fill in automatically from the children's labels. Built `L = (a*b + c) * f` = -8.0 and drew it with `draw_dot(L)`.
+- Bug: the auto label `a*b+c*f` drops the brackets. In [[gotchas]].
+- Not done yet: section 4's question, section 5 (break it), the findings explain-back.
+- Next: those, then explain item 3 back, then item 4 (manual backprop through this exact graph).
+
 ## Revisit later
-- `traverse_graph`: drop the dead `is not None` check.
+- `traverse_graph`: drop the dead `is not None` check. Still there in notebook 03.
+- Item 3, section 4: which box does item 4 fill in first, and which last?
 - Flat spot of `f`: you bracketed it between 0.5 and 0.8 but never pinned it down. Narrow it by nudging (hint: it's a simple fraction).
 - Where did the +39,970 prediction for `a`'s slope come from? Never explained.
 - Unanswered leading question: why can the generator never land on an unseen context? (5,000 names, zero errors.) Hint: `(*current_context[1:], next_char)`.
 - At large N, short names produce no N-grams at all (`range(len(word) - (N - 1))`). How many names does N = 9 silently drop?
 
 ## Not yet installed
-- System Graphviz binary (`dot`): needed at item 3. The pip `graphviz` 0.21 is already in `.venv`, but it only calls `dot` and can't render without it. You asked for venv-only installs, so this is your call: `! sudo apt install -y graphviz`.
 - PyTorch CPU wheel: needed at item 10.

@@ -59,3 +59,10 @@
 ### A dead check left over from `None`
 - **Happened:** `traverse_graph` kept `if value._prev is not None:` after `_prev` changed from `None` to `()`. `()` is never `None`, so the check is always true and does nothing. Leaves print a blank line for their empty `_op`.
 - **Why:** when you change a field's "empty" value, look for code that tested the old one.
+
+## Lesson 3 — Visualising the graph ([[PLAN]], `my-work/03-visualise-graph.ipynb`)
+
+### Auto-built labels lose the brackets
+- **Did:** `__add__` / `__mul__` build the result's label from the children: `f"{self.label}+{other.label}"`.
+- **Happened:** `L = (a*b + c) * f` got the label `a*b+c*f`. Read normally, that means `a*b + (c*f)`, which is a different expression.
+- **Why:** the string remembers the order of the ops but not the grouping. The graph (`_prev`) has the real structure, and the label is only a rough copy of it. Labels also get longer with every layer, so in an MLP they'd be unreadable. Karpathy names the in-between values by hand (`e.label = 'e'`).
